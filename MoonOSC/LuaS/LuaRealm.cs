@@ -21,6 +21,7 @@ namespace MoonOSC.LuaS
 
             LuaState = new Lua();
             LuaState.LoadCLRPackage();
+            Libraries.SystemLib.Setup(this);
             Libraries.File.Setup(this);
             Libraries.vrc.Setup(this, Program.OSCInstance);
             Libraries.ovr.Setup(this);
@@ -36,7 +37,6 @@ namespace MoonOSC.LuaS
                 Console.ForegroundColor = fc;
             }
             UpdateFunction = LuaState.GetFunction("SYSTEM_Update");
-
             Instance = this;
         }
 

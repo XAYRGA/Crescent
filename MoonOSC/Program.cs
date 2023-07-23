@@ -15,63 +15,22 @@ namespace MoonOSC {
         public static MicroOSC OSCInstance = new MicroOSC();
         public static LuaRealm LuaRealm = new LuaRealm();
 
-       
-
         private static SpinWait threadCTL = new SpinWait();
         private static Stopwatch FrameTimer = new Stopwatch();
         private static NLua.LuaFunction IngestDataFunc;
-        
 
         public static bool Running = true;
+
         public static void Main(string[] args)
         {
+
             LuaRealm.InitRealm();   
             OSCInstance.Connect("127.0.0.1",9001,9000);
             OSCInstance.OnMessage += oscMessageIngest;
-
-            Console.Write("Waiting for VR");
-            {
-
-                bool w = false;
-                var ofc = Console.ForegroundColor;
-                var c = 0;
-                var lef = Console.CursorLeft;
-
-                while (true)
-                {
-            
-                    try
-                    {
-                        VRSystem.Start();
-                        break;
-                    }
-                    catch (Exception e)
-                    {
-                        if (c > 15)
-                        {
-                            w = !w;
-                            if (w == true)
-                                Console.ForegroundColor = ConsoleColor.Red;
-                            else
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                            c = 0;
-                            Console.CursorLeft = lef;
-                        }
-                        c++;
-                        Console.Write(".");
-                        Thread.Sleep(50);
-
-                    }
-               
-                }
-                Console.WriteLine();
-                Console.ForegroundColor = ofc;
-            }
-
+            VRSystem.Start();
             Console.WriteLine("Got VR");
- 
-
             FrameTimer.Start();
+
             long tick_count = 0;
             IngestDataFunc = LuaRealm.Instance.LuaState.GetFunction("SYSTEM_IngestOSCData");
             while (Running)
@@ -107,6 +66,6 @@ namespace MoonOSC {
             }
             
         }
-        //*/
+
     }
 }

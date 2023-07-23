@@ -21,11 +21,42 @@ namespace MoonOSC
 
         public static void Start()
         {
-            VRApp = new Application(Application.ApplicationType.Background);
-            VRSys = VRApp.OVRSystem;
+            Console.WriteLine("Waiting for VR");
+            bool w = false;
+            var ofc = Console.ForegroundColor;
+            var c = 0;
+            var lef = Console.CursorLeft;
+
+            while (true)
+            {
+
+                try
+                {
+                    VRApp = new Application(Application.ApplicationType.Background);
+                    VRSys = VRApp.OVRSystem;
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if (c > 15)
+                    {
+                        w = !w;
+                        if (w == true)
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        else
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                        c = 0;
+                        Console.CursorLeft = lef;
+                    }
+                    c++;
+                    Console.Write(".");
+                    Thread.Sleep(50);
+
+                }
+            }
+            Console.WriteLine();
+            Console.ForegroundColor = ofc;
         }
-
-
 
         public static void Update()
         {
@@ -70,14 +101,6 @@ namespace MoonOSC
             v.Z = (float)Math.Atan2(2f * q.x * q.w - 2f * q.y * q.z, 1f - 2f * sqx - 2f * sqz); // bank
 
             return v;
-        }
-
-        private static float RAD2DEG(float rad)
-        {
-            var deg = (float)(rad / Math.PI) * 180f;
-            if (deg < 0)
-                return deg + 360;
-            return deg;
         }
 
 
@@ -128,9 +151,6 @@ namespace MoonOSC
             {
                 var hmdMtxData = hmdTrkData.mDeviceToAbsoluteTracking;
                 var hmdRot = RotationMatrixToYPR(hmdMtxData);
-                rtn.X = RAD2DEG(hmdRot.X);
-                rtn.Y = RAD2DEG(hmdRot.Y);
-                rtn.Z = RAD2DEG(hmdRot.Z);
                 rtn = hmdRot;
             }
             return rtn;

@@ -41,6 +41,7 @@ namespace MoonOSC
         IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 9001);
         IPEndPoint outgoingEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"),9000);
         public event EventHandler<MicroOSCMessage> OnMessage;
+        public bool Running = true;
 
         public class MicroOSCMessage
         {
@@ -58,7 +59,6 @@ namespace MoonOSC
             outgoingEndPoint = new IPEndPoint(IPAddress.Parse(host), transmit);
             udp = new UdpClient(endPoint);
             udp.DontFragment = true;
-
         } 
 
 
@@ -155,8 +155,15 @@ namespace MoonOSC
 
         public void Update()
         {
-            while (udp.Available > 0)
-                processPacket();
+            while (udp.Available > 0 && Running)
+                try
+                {
+                    processPacket();
+                } catch (Exception e)
+                {
+                    Console.WriteLine($"OSC processing terminated! {e.ToString()}");
+                    Running = false;
+                }
         }
 
         private string readOSCString(bgReader ctx)
