@@ -102,7 +102,6 @@ namespace MoonOSC.LuaS.Libraries
             rlm.LuaState.RegisterFunction("vrc.tracker.setPosition", null, typeof(vrc).GetMethod("trackerSetPositon"));
             rlm.LuaState.RegisterFunction("vrc.tracker.setRotation", null, typeof(vrc).GetMethod("trackerSetRotation"));
             rlm.LuaState.RegisterFunction("vrc.sendOSCMessage", null, typeof(vrc).GetMethod("sendOSCMessage"));
-
             rlm.LuaState.RegisterFunction("avatar.setInt", null, typeof(vrc).GetMethod("avatarSetInt"));
             rlm.LuaState.RegisterFunction("avatar.setFloat", null, typeof(vrc).GetMethod("avatarSetFloat"));
             rlm.LuaState.RegisterFunction("avatar.setBool", null, typeof(vrc).GetMethod("avatarSetBool"));

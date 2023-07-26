@@ -6,8 +6,10 @@ using System.Timers;
 using System.Diagnostics;
 using OVRSharp;
 using Valve.VR;
+using XInputDotNetCore;
 
-namespace MoonOSC {
+namespace MoonOSC
+{
     public static class Program
     {
         private const int SYSTEM_UPDATE_RATE = 60;
@@ -27,9 +29,10 @@ namespace MoonOSC {
             LuaRealm.InitRealm();   
             OSCInstance.Connect("127.0.0.1",9001,9000);
             OSCInstance.OnMessage += oscMessageIngest;
-            VRSystem.Start();
+           // VRSystem.Start();
             Console.WriteLine("Got VR");
             FrameTimer.Start();
+            InputSystem.RefreshJoypads();
 
             long tick_count = 0;
             IngestDataFunc = LuaRealm.Instance.LuaState.GetFunction("SYSTEM_IngestOSCData");
@@ -44,10 +47,16 @@ namespace MoonOSC {
                 while (FrameTimer.ElapsedTicks < next_frame)
                     threadCTL.SpinOnce();
 
-                OSCInstance.Update();
-                VRSystem.Update();
-                LuaRealm.Update();
+               // OSCInstance.Update();
+               // VRSystem.Update();
+                //LuaRealm.Update();
+                test();
             }       
+        }
+
+        private static void test()
+        {
+        
         }
   
        

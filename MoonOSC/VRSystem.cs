@@ -29,7 +29,6 @@ namespace MoonOSC
 
             while (true)
             {
-
                 try
                 {
                     VRApp = new Application(Application.ApplicationType.Background);
