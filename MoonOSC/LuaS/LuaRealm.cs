@@ -25,6 +25,7 @@ namespace MoonOSC.LuaS
             Libraries.File.Setup(this);
             Libraries.vrc.Setup(this, Program.OSCInstance);
             Libraries.ovr.Setup(this);
+            Libraries.InputLib.Setup(this);
 
             try
             {

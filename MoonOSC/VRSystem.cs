@@ -197,8 +197,5 @@ namespace MoonOSC
         {
             return GetControllerByRole(ETrackedControllerRole.RightHand);
         }
-
-
-
     }
 }
