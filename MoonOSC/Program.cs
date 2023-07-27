@@ -47,9 +47,9 @@ namespace MoonOSC
                 while (FrameTimer.ElapsedTicks < next_frame)
                     threadCTL.SpinOnce();
 
-                OSCInstance.Update();
-                VRSystem.Update();
-                LuaRealm.Update();
+               OSCInstance.Update();
+               VRSystem.Update();
+               LuaRealm.Update();
             }       
         }
 

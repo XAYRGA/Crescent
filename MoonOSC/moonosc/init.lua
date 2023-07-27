@@ -25,5 +25,4 @@ end
 
 dofile("moonosc/plugin.lua")
 
-
 event.RaiseGlobal("PostInit")

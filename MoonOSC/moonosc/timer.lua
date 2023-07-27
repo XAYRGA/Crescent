@@ -77,6 +77,4 @@ local function timertick()
         end    
     end
 end
-
-
 event.subscribe("update","timers",timertick)

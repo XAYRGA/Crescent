@@ -1,5 +1,65 @@
 ﻿plugin = {} 
 local environments = {}
+local plugin_sandbox_env = {}
+
+local plugin_sandbox_imports = {
+	"package",
+	"setmetatable",
+	"plugin",
+	"vrc",
+	"warn",
+	--"debug", -- yeaaah no.
+	"timer",
+	"next",
+	"setfenv",
+	"dofile",
+	"event",
+	"pairs",
+	"collectgarbage",
+	"assert",
+	"utf8",
+	"Vector",
+	"xpcall",
+	"select",
+	"ovr",
+	"error",
+	"avatar",
+	"tostring",
+	"controller",
+	"load",
+	"_VERSION",
+	"getfenv",
+	"rawlen",
+	"table",
+	--"rawequal",
+	"http",
+	"print",
+	"pcall",
+	"type",
+	--"rawget",
+	"system",
+	"math",
+	"tonumber",
+	"loadfile",
+	"require",
+	"string",
+	"coroutine",
+	"ipairs",
+	"getmetatable"
+}
+
+for k,v in pairs(plugin_sandbox_imports) do 
+	local ref = _G[v]
+	if type(ref)=="table" then -- deep copy the library
+		plugin_sandbox_env[v] = {}
+		for idx,data in pairs(ref) do 
+			plugin_sandbox_env[v][idx] = data
+		end 
+	else 
+		plugin_sandbox_env[v] = ref
+	end 
+end 
+
 
 -- Loads plugins 
 
@@ -10,7 +70,7 @@ for k,v in pairs(a) do
 		NAME = nil, 
 		AUTHOR = nil,  
 	}
-	setmetatable(pluginEnv,{__index = _G})
+	setmetatable(pluginEnv,{__index = plugin_sandbox_env})
 	local func,err = loadfile(v)
 	if (func==nil) then 
 		local err2 = string.format("Failed to load plugin: %s (Compile failure)\n\n", v,err)
