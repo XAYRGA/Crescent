@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OVRSharp;
-
+using System.Diagnostics;
 using Valve.VR;
 using System.Numerics;
 
@@ -21,16 +21,20 @@ namespace MoonOSC
 
         public static void Start()
         {
+
             Console.WriteLine("Waiting for VR");
             bool w = false;
             var ofc = Console.ForegroundColor;
             var c = 0;
             var lef = Console.CursorLeft;
+            Process currentProcess = Process.GetCurrentProcess();
 
             while (true)
             {
+                long usedMemory = currentProcess.PrivateMemorySize64;
                 try
                 {
+                  
                     VRApp = new Application(Application.ApplicationType.Background);
                     VRSys = VRApp.OVRSystem;
                     break;
@@ -52,8 +56,27 @@ namespace MoonOSC
                     Thread.Sleep(50);
 
                 }
+                var mem = System.Environment.WorkingSet / (1024f * 1024f);
+                if (mem > 80)
+                {
+
+                    Console.WriteLine();
+                    Console.WriteLine("Restart please.");
+                    Console.WriteLine("Due to a memory leak in the C# OVR wrapper, waiting too long for VR to start causes a memory leak.");
+                    Console.WriteLine("You should restart this application to free the memory.");
+                    while (true)
+                    {
+                        Console.ReadKey();
+                    }
+
+                }
             }
+
+            
             Console.WriteLine();
+      
+
+
             Console.ForegroundColor = ofc;
         }
 

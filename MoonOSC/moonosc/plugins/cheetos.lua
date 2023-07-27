@@ -19,6 +19,3 @@ event.subscribe("update","myUpdate",function()
 	end 
 end)
 
-
-
-

@@ -48,6 +48,25 @@ local plugin_sandbox_imports = {
 	"getmetatable"
 }
 
+
+
+
+function plugin.getList() 
+	local keys = {}
+	for key,value in pairs(environments) do 
+		keys[#keys + 1] = key
+	end 
+	return keys
+end 
+
+function plugin.getEnvironment(guid)
+	local env = environments[guid]
+	if (env) then 
+		return env
+	end 
+end 
+
+
 for k,v in pairs(plugin_sandbox_imports) do 
 	local ref = _G[v]
 	if type(ref)=="table" then -- deep copy the library
@@ -60,8 +79,6 @@ for k,v in pairs(plugin_sandbox_imports) do
 	end 
 end 
 
-
--- Loads plugins 
 
 local a = file.Find("moonosc/plugins/","*.lua")
 for k,v in pairs(a) do
@@ -93,21 +110,4 @@ for k,v in pairs(a) do
 		end 
 	end 
 end 
-
-
-function plugin.getList() 
-	local keys = {}
-	for key,value in pairs(environments) do 
-		keys[#keys + 1] = key
-	end 
-	return keys
-end 
-
-function plugin.getEnvironment(guid)
-	local env = environments[guid]
-	if (env) then 
-		return env
-	end 
-end 
-
 
