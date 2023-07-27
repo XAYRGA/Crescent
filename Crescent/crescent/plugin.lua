@@ -78,7 +78,7 @@ for k,v in pairs(plugin_sandbox_imports) do
 end 
 
 
-local a = file.Find("moonosc/plugins/","*.lua")
+local a = file.Find("crescent/plugins/","*.lua")
 for k,v in pairs(a) do
 	local pluginEnv = {
 		GUID = nil,

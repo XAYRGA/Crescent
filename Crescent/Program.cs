@@ -1,14 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
-using MoonOSC.LuaS;
+using Crescent.LuaS;
 using System.Timers;
 using System.Diagnostics;
 using OVRSharp;
 using Valve.VR;
 using System.Runtime.InteropServices;
 
-namespace MoonOSC
+namespace Crescent
 {
     public static class Program
     {

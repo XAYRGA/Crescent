@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NLua;
-using MoonOSC.LuaS;
+using Crescent.LuaS;
 using System.Diagnostics;
 
-namespace MoonOSC.LuaS.Libraries
+namespace Crescent.LuaS.Libraries
 {
 
     public static class SystemLib

@@ -6,15 +6,15 @@
                                   ]])
 
 
-print("xayrga 2023 https://github.com/xayrga/moonosc")
+print("xayrga 2023 https://github.com/xayrga/crescent")
 
-dofile("moonosc/table.lua")
-dofile("moonosc/math.lua")
-dofile("moonosc/env.lua")
-dofile("moonosc/events.lua")
-dofile("moonosc/avatar.lua")
-dofile("moonosc/timer.lua")
-dofile("moonosc/json.lua")
+dofile("crescent/table.lua")
+dofile("crescent/math.lua")
+dofile("crescent/env.lua")
+dofile("crescent/events.lua")
+dofile("crescent/avatar.lua")
+dofile("crescent/timer.lua")
+dofile("crescent/json.lua")
 
 function SYSTEM_Update()
 	event.RaiseGlobal("update")
@@ -25,6 +25,6 @@ function SYSTEM_IngestOSCData(path, data)
 	event.RaiseGlobal("osc:" .. path,data)
 end
 
-dofile("moonosc/plugin.lua")
+dofile("crescent/plugin.lua")
 
 event.RaiseGlobal("PostInit")

@@ -9,7 +9,7 @@ using xayrga;
 using xayrga.byteglider;
 
 
-namespace MoonOSC
+namespace Crescent
 {
 
     public class MicroOSC

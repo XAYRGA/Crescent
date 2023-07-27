@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NLua; 
 
-namespace MoonOSC.LuaS.Libraries
+namespace Crescent.LuaS.Libraries
 {
     public static class HttpLib
     {

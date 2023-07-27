@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NLua;
 
 
-namespace MoonOSC.LuaS
+namespace Crescent.LuaS
 {
     public class LuaRealm
     {
@@ -36,7 +36,7 @@ namespace MoonOSC.LuaS
 
             try
             {
-                LuaState.DoFile("moonosc/init.lua");
+                LuaState.DoFile("crescent/init.lua");
             } catch (Exception E)
             {
                 var fc = Console.ForegroundColor;

@@ -8,7 +8,7 @@ using System.Diagnostics;
 using Valve.VR;
 using System.Numerics;
 
-namespace MoonOSC
+namespace Crescent
 {
     static internal class VRSystem
     {

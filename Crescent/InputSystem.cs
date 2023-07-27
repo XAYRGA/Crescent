@@ -12,7 +12,7 @@ using System.Diagnostics;
 ///  like teensies 
 ///  
 
-namespace MoonOSC
+namespace Crescent
 {
     static internal class InputSystem
     {
