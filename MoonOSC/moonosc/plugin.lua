@@ -45,7 +45,8 @@ local plugin_sandbox_imports = {
 	"string",
 	"coroutine",
 	"ipairs",
-	"getmetatable"
+	"getmetatable",
+	"json"
 }
 
 
@@ -70,10 +71,7 @@ end
 for k,v in pairs(plugin_sandbox_imports) do 
 	local ref = _G[v]
 	if type(ref)=="table" then -- deep copy the library
-		plugin_sandbox_env[v] = {}
-		for idx,data in pairs(ref) do 
-			plugin_sandbox_env[v][idx] = data
-		end 
+		plugin_sandbox_env[v] = table.copy(ref)
 	else 
 		plugin_sandbox_env[v] = ref
 	end 

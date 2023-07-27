@@ -8,11 +8,13 @@
 
 print("xayrga 2023 https://github.com/xayrga/moonosc")
 
+dofile("moonosc/table.lua")
 dofile("moonosc/math.lua")
 dofile("moonosc/env.lua")
 dofile("moonosc/events.lua")
 dofile("moonosc/avatar.lua")
 dofile("moonosc/timer.lua")
+dofile("moonosc/json.lua")
 
 function SYSTEM_Update()
 	event.RaiseGlobal("update")
