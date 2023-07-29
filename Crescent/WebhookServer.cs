@@ -73,6 +73,12 @@ namespace Crescent
             endpoints.Add(endp.Path, endp);
         }
 
+        public static void RemoveEndpoint(string path)
+        {
+            if (endpoints.ContainsKey(path))
+                endpoints.Remove(path);
+        }
+
         private static void handleRequestLoop()
         {
             while (true)

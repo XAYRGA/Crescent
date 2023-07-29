@@ -28,10 +28,11 @@ namespace Crescent.LuaS.Libraries
         public static void Setup(LuaRealm rlm)
         {
             Realm = rlm;
-
+            
             rlm.LuaState.DoString(" webhook = {}");
             rlm.LuaState.RegisterFunction("webhook.add", null, typeof(WebHookLib).GetMethod("Add"));
-    
+            rlm.LuaState.RegisterFunction("webhook.destroy", null, typeof(WebhookServer).GetMethod("RemoveEndpoint"));
+
         }
     }
 }
