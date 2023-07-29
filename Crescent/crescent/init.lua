@@ -1,8 +1,9 @@
 ﻿print(
-[[  __  __                          
- |  \/  |___  ___ _ _  ___ ___ __ 
- | |\/| / _ \/ _ \ ' \/ _ (_-</ _|
- |_|  |_\___/\___/_||_\___/__/\__|
+[[   ___                        _   
+  / __|_ _ ___ ___ __ ___ _ _| |_ 
+ | (__| '_/ -_|_-</ _/ -_) ' \  _|
+  \___|_| \___/__/\__\___|_||_\__|
+                                  
                                   ]])
 
 
@@ -28,3 +29,8 @@ end
 dofile("crescent/plugin.lua")
 
 event.RaiseGlobal("PostInit")
+
+webhook.add("webhookTest","myuniquename",function()
+	print("webHookTest called!")
+end)
+

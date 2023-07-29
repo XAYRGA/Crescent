@@ -27,8 +27,9 @@ namespace Crescent.LuaS
             Libraries.ovr.Setup(this);
             Libraries.InputLib.Setup(this);
             Libraries.HttpLib.Setup(this);
+            Libraries.WebHookLib.Setup(this);
    
-#if !DEBUG
+#if !DEBUG && !DEBUG_WINDOWS
             LuaState.DoString("import = {}");
             LuaState.DoString("CLRPackage = {}");
             LuaState.DoString("luanet = {}");
@@ -65,7 +66,7 @@ namespace Crescent.LuaS
         {
             try
             {
-                //UpdateFunction.Call();
+                UpdateFunction.Call();
                 Libraries.HttpLib.Update();
             }catch (Exception E)
             {

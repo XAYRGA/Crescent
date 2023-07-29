@@ -37,6 +37,7 @@ local plugin_sandbox_imports = {
 	"pcall",
 	"type",
 	--"rawget",
+	"webhook",
 	"system",
 	"math",
 	"tonumber",

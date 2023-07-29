@@ -48,6 +48,8 @@ function event.raise(name, ...)
 		end 
 	end 
 end 
+
+
 --  Subscribes to an event 
 function event.subscribe(evt, name, func) 
 	local fenv = getfenv(func) 

@@ -21,7 +21,7 @@ end
 
 
 function timer.create(id,del,reps,func)
-    local FUNCN = "Create"
+    local FUNCN = "create"
     expect(id,"string",1,FUNCN)
     expect(del,"number",2,FUNCN)
     expect(reps,"number",3,FUNCN)

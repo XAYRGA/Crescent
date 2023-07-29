@@ -26,13 +26,14 @@ namespace Crescent
         public static void Main(string[] args)
         {
 
+            FrameTimer.Start();
             LuaRealm.InitRealm();   
             OSCInstance.Connect("127.0.0.1",9001,9000);
             OSCInstance.OnMessage += oscMessageIngest;
-            VRSystem.Start();
+            //VRSystem.Start();
             Console.WriteLine("Got VR");
-            FrameTimer.Start();
-  
+          
+            WebhookServer.Start();
 
             long tick_count = 0;
             IngestDataFunc = LuaRealm.Instance.LuaState.GetFunction("SYSTEM_IngestOSCData");
@@ -47,9 +48,10 @@ namespace Crescent
                 while (FrameTimer.ElapsedTicks < next_frame)
                     threadCTL.SpinOnce();
 
-               OSCInstance.Update();
-               VRSystem.Update();
-               LuaRealm.Update();
+                WebhookServer.Update();
+               //OSCInstance.Update();
+               //VRSystem.Update();
+               //LuaRealm.Update();
             }       
         }
 

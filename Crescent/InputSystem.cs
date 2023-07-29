@@ -14,8 +14,12 @@ using System.Diagnostics;
 
 namespace Crescent
 {
+
+
     static internal class InputSystem
     {
+
+#if DEBUG || DEBUG_WINDOWS || RELEASE_WINDOWS
         private const String WINMM_DLL = "winmm.dll";
         private const CallingConvention CALLCONV = CallingConvention.StdCall;
         private const int MAXPNAMELEN = 32;
@@ -180,4 +184,29 @@ namespace Crescent
             return joyDat.dwPOV;
         }
     }
+#else
+        // Stub for other OS' until we implement it!
+        public static float getAxis(byte joy, int axis)
+        {
+            return 0;
+        }
+
+
+        public static bool getButton(byte joy, int button)
+        {
+            return false;
+        }
+
+        public static int getButtonState(byte joy)
+        {
+            return 0;
+        }
+
+        public static int getPOVAngle(byte joy)
+        {
+            return 0;
+        }
+    }
+
+#endif
 }

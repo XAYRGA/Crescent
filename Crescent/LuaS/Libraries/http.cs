@@ -29,7 +29,7 @@ namespace Crescent.LuaS.Libraries
                     requestRecpt.Callback.Call(requestRecpt.Body, requestRecpt.Body);
                 } catch (Exception E)
                 {
-                    Console.WriteLine($"HTTP Request failed {E}");
+                    Console.WriteLine($"HTTP callback fail {E}");
                 }
             }
         }
@@ -53,13 +53,34 @@ namespace Crescent.LuaS.Libraries
             }
         }
 
+        public static async void Post(string url, string data, LuaFunction result)
+        {
+
+            using (StringContent cnt = new StringContent(data))
+            using (HttpClient client = new HttpClient())
+            {
+                var response = await client.PostAsync(url, cnt);
+                var content = response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : "";
+                lock (HTTPResultQueue) // lock access to object from main thread while we insert this.
+                {
+                    HTTPResultQueue.Enqueue(new HTTPResultContainer()
+                    {
+                        Code = (int)response.StatusCode,
+                        Callback = result,
+                        Body = content
+                    });
+                }
+            }
+        }
+
 
 
         public static void Setup(LuaRealm rlm)
         {
             Realm = rlm;
-            rlm.LuaState.DoString(" http = {}");
+            rlm.LuaState.DoString(" http = {} ");
             rlm.LuaState.RegisterFunction("http.get", null, typeof(HttpLib).GetMethod("Get"));
+            rlm.LuaState.RegisterFunction("http.post", null, typeof(HttpLib).GetMethod("Post"));
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OVRSharp;
 using System.Diagnostics;
 using Valve.VR;
+using System.Runtime.InteropServices;
 using System.Numerics;
 
 namespace Crescent
@@ -16,75 +17,29 @@ namespace Crescent
         public static Application VRApp;
         public static Valve.VR.CVRSystem VRSys;
         private static TrackedDevicePose_t[] PosesLastFrame = new TrackedDevicePose_t[OpenVR.k_unMaxTrackedDeviceCount];
-
         private static ETrackedPropertyError lastError;
 
-        public static void Start()
+        public static bool Start()
         {
-
-            Console.WriteLine("Waiting for VR");
-            bool w = false;
-            var ofc = Console.ForegroundColor;
-            var c = 0;
-            var lef = Console.CursorLeft;
-            Process currentProcess = Process.GetCurrentProcess();
-
-            while (true)
+            try
             {
-                long usedMemory = currentProcess.PrivateMemorySize64;
-                try
-                {
-                  
-                    VRApp = new Application(Application.ApplicationType.Background);
-                    VRSys = VRApp.OVRSystem;
-                    break;
-                }
-                catch (Exception e)
-                {
-                    if (c > 15)
-                    {
-                        w = !w;
-                        if (w == true)
-                            Console.ForegroundColor = ConsoleColor.Red;
-                        else
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                        c = 0;
-                        Console.CursorLeft = lef;
-                    }
-                    c++;
-                    Console.Write(".");
-                    Thread.Sleep(50);
-
-                }
-                var mem = System.Environment.WorkingSet / (1024f * 1024f);
-                if (mem > 80)
-                {
-
-                    Console.WriteLine();
-                    Console.WriteLine("Restart please.");
-                    Console.WriteLine("Due to a memory leak in the C# OVR wrapper, waiting too long for VR to start causes a memory leak.");
-                    Console.WriteLine("You should restart this application to free the memory.");
-                    while (true)
-                    {
-                        Console.ReadKey();
-                    }
-
-                }
+                VRApp = new Application(Application.ApplicationType.Background);
+                VRSys = VRApp.OVRSystem;                    
             }
-
-            
-            Console.WriteLine();
-      
-
-
-            Console.ForegroundColor = ofc;
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
         }
 
         public static void Update()
         {
+            if (VRSys == null)
+                return; 
+
             VRSys.GetDeviceToAbsoluteTrackingPose(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated, 0, PosesLastFrame);
         }
-
 
         internal static void QuaternionFromMatrix(HmdMatrix34_t m, ref HmdQuaternion_t q)
         {
@@ -96,6 +51,9 @@ namespace Crescent
 
         public static Vector3 RotationMatrixToYPR(HmdMatrix34_t m)
         {
+            if (VRSys == null)
+                return new Vector3(0);
+
             var v = new Vector3(0);
             HmdQuaternion_t q = new HmdQuaternion_t();
             QuaternionFromMatrix(m, ref q);
@@ -125,9 +83,36 @@ namespace Crescent
             return v;
         }
 
+        private static VRControllerState_t GetControllerState(uint controller)
+        {
+            var W = new VRControllerState_t();
+            if (VRSys == null)
+                return W;
+            VRSys.GetControllerState(controller, ref W, (uint)Marshal.SizeOf(W));          
+            return W;
+        }
+
+        // Todo: Benchmark the calls between the C# state and retrieving button
+        // cache the controller states per call if necessary.
+        public static bool GetControllerButtonPressed(uint controller, byte button)
+        {
+            VRControllerState_t controllerState = GetControllerState(controller);
+            var buttons = controllerState.ulButtonPressed;
+            return ((buttons >> button) & 0x01) > 0;
+        }
+
+        public static bool GetControllerButtonTouched(uint controller, byte button)
+        {
+            VRControllerState_t controllerState = GetControllerState(controller);
+            var buttons = controllerState.ulButtonTouched;
+            return ((buttons >> button) & 0x01) > 0;
+        }
 
         public static Vector3 GetTrackerVelocity(int tracker)
         {
+            if (VRSys == null)
+                return new Vector3(0);
+
             var rtn = new Vector3(0f);
             if (tracker > OpenVR.k_unMaxTrackedDeviceCount)
                 return rtn;
@@ -145,6 +130,9 @@ namespace Crescent
 
         public static Vector3 GetTrackerPosition(int tracker)
         {
+            if (VRSys == null)
+                return new Vector3(0);
+
             var rtn = new Vector3(0f);
             if (tracker > OpenVR.k_unMaxTrackedDeviceCount)
                 return rtn;
@@ -163,6 +151,9 @@ namespace Crescent
 
         public static Vector3 GetTrackerRotation(int tracker)
         {
+            if (VRSys == null)
+                return new Vector3(0);
+
             var rtn = new Vector3(0f);
             if (tracker > OpenVR.k_unMaxTrackedDeviceCount)
                 return rtn;
@@ -180,6 +171,9 @@ namespace Crescent
 
         public static string GetTrackerSerialNumber(uint tracker)
         {
+            if (VRSys == null)
+                return "";
+
             string rtn = null;
             if (tracker > OpenVR.k_unMaxTrackedDeviceCount)
                 return rtn;
@@ -192,6 +186,9 @@ namespace Crescent
 
         private static uint GetControllerByRole(ETrackedControllerRole ctrlRole)
         {
+            if (VRSys == null)
+                return 0;
+
             for (uint i = 0; i < OpenVR.k_unMaxTrackedDeviceCount; i++)
             {
                 var devClass = VRSys.GetTrackedDeviceClass(i);
@@ -214,7 +211,6 @@ namespace Crescent
         {
             return GetControllerByRole(ETrackedControllerRole.LeftHand);
         }
-
 
         public static uint GetRightHand()
         {
