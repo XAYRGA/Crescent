@@ -26,7 +26,7 @@ namespace Crescent
 
 
  
-    static internal class WebhookServer
+    public static class WebhookServer
     {
 
         private class WebhookThreadedCallbackResponse
@@ -37,6 +37,7 @@ namespace Crescent
         }
 
         private static HttpListener listener;
+        private static string AuthKey = "ea7337e5-4eb2-4495-a565-d039c2f224f9";
         private static Dictionary<string, WebhookCallback> endpoints = new Dictionary<string, WebhookCallback>()
         {
             //{"/floppa/test",new api.test() }
@@ -44,13 +45,20 @@ namespace Crescent
         private static Thread RunThread;
         private static Queue<WebhookThreadedCallbackResponse> queue = new Queue<WebhookThreadedCallbackResponse>();
 
-        public static void Start()
+        public static void Start(string authKey)
         {
+            AuthKey = authKey;
             listener = new HttpListener();
             listener.Prefixes.Add("http://localhost:9291/crescent/");
             listener.Start();
             RunThread = new Thread(new ThreadStart(handleRequestLoop));
             RunThread.Start();
+        }
+
+        public static void Stop()
+        {
+            listener?.Stop();
+            RunThread?.Abort();
         }
 
         public static void Update()
@@ -103,7 +111,7 @@ namespace Crescent
             var endpoint = urlData[3];
 
             // Didn't authenticate
-            if (authToken == null || authToken.Length < 1)
+            if (authToken == null || authToken.Length < 1 || authToken!=AuthKey)
             {
                 response.StatusCode = 401; return;
             }

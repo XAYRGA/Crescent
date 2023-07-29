@@ -8,33 +8,37 @@ using OVRSharp;
 using Valve.VR;
 using System.Runtime.InteropServices;
 
+
+// TODO: Rework core in the future. 
+// This is kinda spaghetti.
+
 namespace Crescent
 {
-    public static class Program
+    public static class Core
     {
         private const int SYSTEM_UPDATE_RATE = 60;
 
-        public static MicroOSC OSCInstance = new MicroOSC();
-        public static LuaRealm LuaRealm = new LuaRealm();
-
+        public static MicroOSC OSC = new MicroOSC();
+        public static LuaRealm Lua = new LuaRealm();
         private static SpinWait threadCTL = new SpinWait();
         private static Stopwatch FrameTimer = new Stopwatch();
         private static NLua.LuaFunction IngestDataFunc;
-
+        
         public static bool Running = true;
 
-        public static void Main(string[] args)
+        // Proxy
+        private static void Main(string[] args)
         {
+            Start(args);
+        }
 
+        public static void Start(string[] ?args)
+        {
+            Running = true;
             FrameTimer.Start();
-            LuaRealm.InitRealm();   
-            OSCInstance.Connect("127.0.0.1",9001,9000);
-            OSCInstance.OnMessage += oscMessageIngest;
-            //VRSystem.Start();
-            Console.WriteLine("Got VR");
+            Lua.Start();   
+            OSC.OnMessage += oscMessageIngest;
           
-            WebhookServer.Start();
-
             long tick_count = 0;
             IngestDataFunc = LuaRealm.Instance.LuaState.GetFunction("SYSTEM_IngestOSCData");
             while (Running)
@@ -48,11 +52,25 @@ namespace Crescent
                 while (FrameTimer.ElapsedTicks < next_frame)
                     threadCTL.SpinOnce();
 
-                WebhookServer.Update();
-               //OSCInstance.Update();
-               //VRSystem.Update();
-               //LuaRealm.Update();
-            }       
+                Update();
+            }     
+        }
+
+        public static void Update()
+        {
+            WebhookServer.Update();
+            OSC.Update();
+            VRSystem.Update();
+            Lua.Update();
+        }
+
+        public static void Stop()
+        {
+            Running = false;
+            FrameTimer.Stop();
+            OSC?.Stop();
+            Lua.Stop();
+            WebhookServer.Stop();
         }
 
        
@@ -60,7 +78,7 @@ namespace Crescent
         {
             try
             {
-                var unwrap = LuaRealm.EmptyTable();
+                var unwrap = Lua.EmptyTable();
                 for (int i = 0; i < message.Data.Length; i++)
                     unwrap[i + 1] = message.Data[i];
                 IngestDataFunc.Call(message.Address, unwrap);
@@ -69,8 +87,6 @@ namespace Crescent
             {
                 Console.WriteLine(E.ToString());
             }
-            
         }
-
     }
 }

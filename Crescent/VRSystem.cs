@@ -14,6 +14,8 @@ namespace Crescent
     static internal class VRSystem
     {
 
+
+        public static bool Running = false;
         public static Application VRApp;
         public static Valve.VR.CVRSystem VRSys;
         private static TrackedDevicePose_t[] PosesLastFrame = new TrackedDevicePose_t[OpenVR.k_unMaxTrackedDeviceCount];
@@ -30,7 +32,14 @@ namespace Crescent
             {
                 return false;
             }
+            Running = true;
             return true;
+        }
+        public static void Stop()
+        {
+            Running = false;
+            VRSys = null;
+            VRApp?.Shutdown();          
         }
 
         public static void Update()

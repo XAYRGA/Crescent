@@ -13,8 +13,8 @@ namespace Crescent.LuaS
         public Lua LuaState;
         public static LuaRealm Instance;
         public LuaFunction UpdateFunction;
-        
-        public void InitRealm()
+       
+        public void Start()
         {
             if (Instance != null)
                 Instance.LuaState.Close();    
@@ -23,7 +23,7 @@ namespace Crescent.LuaS
             LuaState.LoadCLRPackage();
             Libraries.SystemLib.Setup(this);
             Libraries.File.Setup(this);
-            Libraries.vrc.Setup(this, Program.OSCInstance);
+            Libraries.vrc.Setup(this, Core.OSC);
             Libraries.ovr.Setup(this);
             Libraries.InputLib.Setup(this);
             Libraries.HttpLib.Setup(this);
@@ -47,6 +47,12 @@ namespace Crescent.LuaS
             }
             UpdateFunction = LuaState.GetFunction("SYSTEM_Update");
             Instance = this;
+        }
+
+        public void Stop()
+        {
+            LuaState.Close();
+            LuaState.Dispose();
         }
 
         public LuaTable EmptyTable()

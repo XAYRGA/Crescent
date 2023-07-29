@@ -11,7 +11,6 @@ using xayrga.byteglider;
 
 namespace Crescent
 {
-
     public class MicroOSC
     {
         // Protocol defs
@@ -60,6 +59,13 @@ namespace Crescent
             udp = new UdpClient(endPoint);
             udp.DontFragment = true;
         } 
+
+        public void Stop()
+        {
+            if (endPoint!=null)
+                endPoint = null;
+            udp?.Dispose();
+        }
 
 
        private void processPacket()
@@ -155,6 +161,9 @@ namespace Crescent
 
         public void Update()
         {
+            if (udp == null || endPoint == null)
+                return;
+
             while (udp.Available > 0 && Running)
                 try
                 {

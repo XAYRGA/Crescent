@@ -8,6 +8,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Configurations>Debug;Release;DEBUG_WINDOWS</Configurations>
+
   </PropertyGroup>
 
   <ItemGroup>
