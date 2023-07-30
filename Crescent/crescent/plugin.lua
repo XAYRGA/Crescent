@@ -89,7 +89,7 @@ for k,v in pairs(a) do
 	setmetatable(pluginEnv,{__index = plugin_sandbox_env})
 	local func,err = loadfile(v)
 	if (func==nil) then 
-		local err2 = string.format("Failed to load plugin: %s (Compile failure)\n\n", v,err)
+		local err2 = string.format("Failed to load plugin: %s (Compile failure)\n\n%s", v,err)
 		system.error(err2)
 	else 
 		setfenv(func, pluginEnv)
@@ -100,7 +100,7 @@ for k,v in pairs(a) do
 				system.error(err)
 				event.destroy(pluginEnv)
 			else 
-				local txt = string.format("Loaded plugin (%s) %s by %s from %s",pluginEnv.GUID,pluginEnv.NAME,pluginEnv.AUTHOR,v);
+				local txt = string.format("Loaded plugin (%s) %s by %s from %s %s",pluginEnv.GUID,pluginEnv.NAME,pluginEnv.AUTHOR,v, tostring(pluginEnv));
 				print(txt)
 				environments[pluginEnv.GUID] = pluginEnv
 			end 

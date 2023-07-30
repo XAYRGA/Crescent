@@ -39,7 +39,7 @@ end
 
 
 function timer.destroy(id) 
-
+    TIMERS[id] = nil 
 end 
 
 function timer.simple(del,func)

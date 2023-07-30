@@ -30,9 +30,17 @@ namespace Crescent
             LuaRealm.InitRealm();   
             OSCInstance.Connect("127.0.0.1",9001,9000);
             OSCInstance.OnMessage += oscMessageIngest;
-            //VRSystem.Start();
+
+            Console.WriteLine("Wait for VR...");
+            var vrStarted = true;
+            while (!vrStarted)
+            {
+                vrStarted = VRSystem.Start();
+                Thread.Sleep(2000);
+            }
+
             Console.WriteLine("Got VR");
-          
+
             WebhookServer.Start();
 
             long tick_count = 0;
@@ -48,10 +56,10 @@ namespace Crescent
                 while (FrameTimer.ElapsedTicks < next_frame)
                     threadCTL.SpinOnce();
 
-                WebhookServer.Update();
-               //OSCInstance.Update();
-               //VRSystem.Update();
-               //LuaRealm.Update();
+               WebhookServer.Update();
+               OSCInstance.Update();
+               VRSystem.Update();
+               LuaRealm.Update();
             }       
         }
 

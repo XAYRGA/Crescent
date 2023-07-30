@@ -1,0 +1,139 @@
+﻿// Need a good API Documentation tool, but here
+
+=== AVATAR LIBRARY 
+
+INSTANCED	| number | avatar.getFloat(string parameter_name) | Checks the parameter 'parameter_name' on the avatar and returns the decimal value. 
+
+INSTANCED	| number | avatar.getInt(string parameter_name) | Checks the parameter 'parameter_name' on the avatar and returns the number value.
+
+INSTANCED	| number | avatar.getBool(string parameter_name) | Checks the parameter 'parameter_name' on the avatar and returns the true or false value.
+
+GLOBAL		| nil	 | avatar.setInt(string parameter_name, number value) | Sets the value 'parameter_name' on your avatar to the number value. 
+
+GLOBAL		| nil	 | avatar.setBool(string parameter_name, boolean value) | Sets the value 'parameter_name' on your avatar to the boolean value. 
+
+GLOBAL		| nil	 | avatar.setFloat(string parameter_name, float value) | Sets the value 'parameter_name' on your avatar to the float value. 
+
+=== EVENT LIBRARY 
+
+INSTANCED	| nil | event.subscribe(string EventName, string UniqueName, function callback) | Subscribes to an event
+
+INSTANCED	| nil | event.unsubscribe(string EventName, string UniqueName) | Unsubscribes from an event 
+
+INSTANCED	| nil | event.raise(string name, ... vararg arguments) | Raises an event for the current instance
+
+GLOBAL		| nil | event.RaiseGlobal(string EventName, ... vararg arguments) | Raises an event across all instances
+
+INTERNAL	| nil | event.destroy(table Realm) 
+
+
+=== VRCHAT LIBRARY
+
+GLOBAL		| nil | vrc.sendOSCMessage(string path, ... varargs data) |  Sends a raw OSC message to VRChat, automatically encodes data types. 
+
+== INPUT 
+
+GLOBAL		| nil | vrc.input.movePlayer(number x, number y) | Moves the player in the X and Y direction.
+
+GLOBAL		| nil | vrc.input.jump() | Causes the player to jump. 
+
+GLOBAL		| nil | vrc.input.grabLeft(bool grabbing) | Causes the left hand to grab the object in front of it (VR ONLY)
+
+GLOBAL		| nil | vrc.input.grabRight(bool grabbing) | Causes the right hand to grab the object in front of it (VR ONLY)
+
+== CHAT
+
+GLOBAL		| nil | vrc.chat.setTyping(bool typing) | Tells VRChat that you're typing something. 
+
+GLOBAL		| nil | vrc.chat.sendMessage(string message) | Sends a message in the chatbox. 
+
+== TRACKER
+
+GLOBAL		| nil | vrc.tracker.setPosition(number trackerID, number x, number y, number z) | sets the position of a virtual VR tracker.
+
+GLOBAL		| nil | vrc.tracker.setRotation(number trackerID, number p, number y, number r) | sets the rotation of a virtual VR tracker.
+
+=== SYSTEM LIBRARY
+
+GLOBAL		| number | system.time() | Returns a precise time of how long the lua state has been executing. Accurate to 1/60th of a second for up to 32 days
+
+GLOBAL		| number | system.error(string text) | DOES NOT HALT EXECUTION. Throws a lua error in the console.
+
+=== CONTROLLER LIBRARY
+
+GLOBAL		| number | controller.getAxis(number controller, number axis) | retrieves the value of the controller <controller>'s axis <axis>
+
+GLOBAL		| bool	 | controller.getButton(number controller, number button) | retrieves the value of the controller <controller>'s button <button>
+
+GLOBAL		| number | controller.getButtonState(number controller) | Retrieves the 32 bitfield integer for the controller's button state. 
+
+
+=== FILE LIBRARY
+
+RESTRICTED	| nil | file.Read(string file) | 
+
+RESTRICTED	| nil | file.Write(string file, string contents) | 
+
+RESTRICTED	| bool | file.Exists(string file) | 
+
+RESTRICTED	| bool | file.DirectoryExists(string directory) | 
+
+RESTRICTED	| table | file.Find(string folder, string pattern) |
+
+
+=== JSON LIBRARY
+
+GLOBAL		| string | json.encode(table data) | Returns a jsonified string with the data table serialized in it. 
+
+GLOBAL		| table | json.encode(string json) | Returns a table with the deserialized json data in it 
+
+
+=== MATH LIBRARY
+
+GLOBAL		| number | math.round(number input, number deciamls) | Returns the number rounded to the specified deciaml places.  
+
+GLOBAL		| number | math.radiansToDegrees(number input) | Converts a radian to a 0-360 rotation.
+
+=== HTTP LIBRARY 
+
+GLOBAL		| number | http.get(string url, function callback (int code, string body) ) | Requests HTTP GET to URL and executes the callback with the response code and body upon completion.
+
+GLOBAL		| number | http.post(string url,string data ,function callback (int code, string body) ) |  Requests HTTP POST to URL and executes the callback with the response code and body upon completion.
+
+
+=== OVR LIBRARY 
+
+GLOBAL		| Vector3 | ovr.getTrackerPosition(number trackerID) | Returns the vector of the tracker's position.
+
+GLOBAL		| Vector3 | ovr.getTrackerVelocity(number trackerID) | Returns the vector of the tracker's velocity.
+
+GLOBAL		| Vector3 | ovr.getTrackerRotation(number trackerID) | Returns the rotation vector of the tracker (radians).
+
+GLOBAL		| number | ovr.getLeftHand() | Returns the trackerID of the left hand.
+
+GLOBAL		| number | ovr.getRightHand() | Returns the trackerID of the right hand.
+
+GLOBAL		| number | ovr.getHMD() | Returns the trackerID of the headset (Usually always 0)
+
+GLOBAL		| number | ovr.getDeviceSerialNumber(number trackerID) | Returns the serial number of the specified tracker. 
+
+=== TIMER LIBRARY
+
+INTERNAL	| table	| timer.GetTable() | Returns the table of all existing timer instances. 
+
+GLOBAL(temp)| nil   | timer.create(string name, number interval_seconds, number repeat_count, function callback) | Creates a global timer with a name that will execute 'repeat_count' amount of times every 'interval_seconds', 0=infinite repeats
+
+GLOBAL(temp)| nil   | timer.destroy(string name) | Deletes the timer 'name' from the timer table. 
+
+GLOBAL(temp)| nil   | timer.simple(number interval,function callback) | Creates a timer that executes the callback after 'interval' seconds. 
+
+=== TABLE LIBRARY 
+
+GLOBAL		| table | table.copy(src) | Returns an unreferenced clone of the source table.  Doesn't account for cyclic tables, use with caution.
+
+=== PLUGIN LIBRARY 
+
+GLOBAL		| table	| plugin.getList() | Returns a string table of all active plugin GUID's
+
+GLOBAL		| table	| plugin.getEnvironment(string guid) | Returns another plugin's global environment and allows modification of it
+

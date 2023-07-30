@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Crescent-Docs\plugin\example_ovr_1.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="crescent\avatar.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -40,6 +43,12 @@
     </None>
     <None Update="crescent\plugins\cheetos.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Crescent-Docs\plugin\example_events.lua">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Crescent-Docs\plugin\example_timers.lua">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="crescent\table.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -22,10 +22,12 @@ namespace Crescent.LuaS.Libraries
             OSC.sendOSCData("/input/Horizontal", y);
         }
 
-        public static void inputJump()
+        public static void inputJump(bool jump)
         {
-            OSC.sendOSCData("/input/Jump",1);
-            OSC.sendOSCData("/input/Jump", 0);
+            //OSC.sendOSCData("/input/Jump", 1);
+            //OSC.sendOSCData("/input/Jump", 0);
+            // nnnn apparently vrchat wants it set for one frame....
+            OSC.sendOSCData("/input/Jump", jump ? 1 : 0);
         }
 
         public static void inputGrabLeft(bool grabbed)

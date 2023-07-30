@@ -5,6 +5,12 @@ local pcall = pcall
 
 event = {}
 
+
+local function handle_error(e,f) 
+	local stack = debug.traceback(e,3)
+	return stack
+end 
+
 -- Raises an even across all scopes 
 function event.RaiseGlobal(name , ... ) 
 	for environment,events in pairs(subscriptions) do 
@@ -12,7 +18,7 @@ function event.RaiseGlobal(name , ... )
 			local evtTable = events[name]
 			for uid, func in pairs(evtTable) do 			
 				if (func~=nil) then 		
-					local status, err = pcall(func, ... )
+					local status, err = xpcall(func,handle_error, ... )
 					if (status==false) then 
 						local err_text = string.format("event [%s]-> %s: %s ",name,tostring(uid), tostring(err))
 						system.error(err_text)
@@ -30,23 +36,10 @@ function event.destroy(realm)
 	end 
 end 
 
+
 -- Raises event in local environment
 function event.raise(name, ...)
-	local env = getfenv(func) 
-	local events = subscriptions[env] 
-	if events[name] ~= nil then 	
-		local evtTable = events[name]
-		for uid, func in pairs(evtTable) do 			
-			if (func~=nil) then 		
-				local status, err = pcall(func, ... )
-				if (status==false) then 
-					local err_text = string.format("event [%s]-> %s: %s ",name,tostring(uid), tostring(err))
-					system.error(err_text)
-					break
-				end 
-			end 			
-		end 
-	end 
+	event.RaiseGlobal(name, ...) -- temporary :( 
 end 
 
 
@@ -65,9 +58,8 @@ function event.subscribe(evt, name, func)
 end 
 
 -- unsubscribes from an event 
-function event.unsubscribe(evt, name) 
+function event.unsubscribe(evt, name, func) 
 	local fenv = getfenv(func) 
-	print(fenv,_G)
 	if subscriptions[fenv]==nil then 
 		subscriptions[fenv] = {}
 	end 
