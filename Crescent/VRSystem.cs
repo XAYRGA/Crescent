@@ -85,8 +85,8 @@ namespace Crescent
 
         private static VRControllerState_t GetControllerState(uint controller)
         {
-            var W = new VRControllerState_t();
-            if (VRSys == null)
+            var W = new VRControllerState_t();            
+            if (VRSys == null || controller < 0)
                 return W;
             VRSys.GetControllerState(controller, ref W, (uint)Marshal.SizeOf(W));          
             return W;
@@ -96,9 +96,15 @@ namespace Crescent
         // cache the controller states per call if necessary.
         public static bool GetControllerButtonPressed(uint controller, byte button)
         {
+            var buttons = GetButtonState(controller);
+            return ((buttons >> button) & 0x01) > 0;
+        }
+
+        public static ulong GetButtonState(uint controller)
+        {
             VRControllerState_t controllerState = GetControllerState(controller);
             var buttons = controllerState.ulButtonPressed;
-            return ((buttons >> button) & 0x01) > 0;
+            return buttons;
         }
 
         public static bool GetControllerButtonTouched(uint controller, byte button)
@@ -134,9 +140,9 @@ namespace Crescent
                 return new Vector3(0);
 
             var rtn = new Vector3(0f);
-            if (tracker > OpenVR.k_unMaxTrackedDeviceCount)
+            if (tracker > OpenVR.k_unMaxTrackedDeviceCount || tracker == -1)
                 return rtn;
-
+        
             var hmdTrkData = PosesLastFrame[tracker];
             if (hmdTrkData.bPoseIsValid && hmdTrkData.bDeviceIsConnected)
             {
@@ -155,7 +161,7 @@ namespace Crescent
                 return new Vector3(0);
 
             var rtn = new Vector3(0f);
-            if (tracker > OpenVR.k_unMaxTrackedDeviceCount)
+            if (tracker > OpenVR.k_unMaxTrackedDeviceCount || tracker == -1)
                 return rtn;
 
             var hmdTrkData = PosesLastFrame[tracker];
@@ -175,7 +181,7 @@ namespace Crescent
                 return "";
 
             string rtn = null;
-            if (tracker > OpenVR.k_unMaxTrackedDeviceCount)
+            if (tracker > OpenVR.k_unMaxTrackedDeviceCount || tracker == -1)
                 return rtn;
             StringBuilder data = new StringBuilder();
             VRSys.GetStringTrackedDeviceProperty(tracker, ETrackedDeviceProperty.Prop_SerialNumber_String, data, 32, ref lastError);

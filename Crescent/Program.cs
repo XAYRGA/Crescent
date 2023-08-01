@@ -32,7 +32,7 @@ namespace Crescent
             OSCInstance.OnMessage += oscMessageIngest;
 
             Console.WriteLine("Wait for VR...");
-            var vrStarted = true;
+            var vrStarted = false;
             while (!vrStarted)
             {
                 vrStarted = VRSystem.Start();

@@ -28,6 +28,9 @@ namespace Crescent.LuaS.Libraries
             state.RegisterFunction("ovr.getRightHand", null, typeof(VRSystem).GetMethod("GetRightHand"));
             state.RegisterFunction("ovr.getHMD", null, typeof(VRSystem).GetMethod("GetHMD"));
             state.RegisterFunction("ovr.getDeviceSerialNumber", null, typeof(VRSystem).GetMethod("GetTrackerSerialNumber"));
+            state.RegisterFunction("ovr.isButtonDown", typeof(VRSystem).GetMethod("GetControllerButtonPressed"));
+            state.RegisterFunction("ovr.isButtonTouched", typeof(VRSystem).GetMethod("GetControllerButtonTouched"));
+            state.RegisterFunction("ovr.getButtonState", typeof(VRSystem).GetMethod("GetButtonState"));
         }
     }
 }
