@@ -1,7 +1,7 @@
 ﻿
 ![crescent logo](https://xayr.gay/share/07-2023/crescent_logo_small.png)
 
-(Logo art by [Kougie](https://spacevamps.tumblr.com/))
+(Logo moon graphic by [Kougie](https://spacevamps.tumblr.com/))
 # Crescent 
 
 Crescent is an integration toolkit designed for vrchat or other games supporting OSC. 
