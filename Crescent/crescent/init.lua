@@ -30,7 +30,4 @@ dofile("crescent/plugin.lua")
 
 event.RaiseGlobal("PostInit")
 
-webhook.add("webhookTest","myuniquename",function()
-	print("webHookTest called!")
-end)
 

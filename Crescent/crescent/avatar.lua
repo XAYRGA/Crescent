@@ -10,7 +10,6 @@ local function ingestData(path, data)
 		return
 	end
 	local key = string.sub(path,searchPathSize)	
-	--print(key)
 	cached_avatar_data[key] = data[1]
 end 
 event.subscribe("OSCData","avatar_ingest", ingestData)

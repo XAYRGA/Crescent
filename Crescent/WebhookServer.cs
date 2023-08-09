@@ -23,9 +23,6 @@ namespace Crescent
         public LuaFunction CallBack;
     }
 
-
-
- 
     static internal class WebhookServer
     {
 

@@ -93,8 +93,6 @@ namespace Crescent
 
             var typeInfo = readOSCString(ctx);
 
-
-
             var Message = new MicroOSCMessage()
             {
                 Address = address,

@@ -1,26 +1,22 @@
-﻿AUTHOR = "xayrga"
-NAME = "hands over head"
-GUID = "1a07395a-4722-4769-95ea-f5bda763f683"
+﻿AUTHOR = "xayrga" -- Name of YOU :D 
+NAME = "test plugin" -- Name of your plugin
+GUID = "460d14f6-90a3-44e1-9ee6-bd945e1fb66c" -- Every plugin must have a GUID  
+
+-- Plugin API syntax is Lua 5.2 
 
 local debounce = 0 
+event.subscribe("update","myUpdate",function() -- Subscribing to the update event (runs at 60hz)
+	local head = ovr.getHMD() -- Get the ID of the HMD 
+	local trackerPos = ovr.getTrackerPosition(head) -- Get the pos of the head 
+	local trackerAng = ovr.getTrackerRotation(head) -- Get the rotation 
+	local tilt = trackerAng.Y -- Extract the Y component
+	local mils = tonumber(string.format("%.2f", tilt)) -- Truncate decimal
 
-local BUTTON_A = 2 
--- Coordinate X = Left Right, Y = Up Down , Z = Forward Back
-event.subscribe("update","myUpdate",function()
-	
-	local lHandPos = ovr.getTrackerPosition( ovr.getLeftHand() )
-	local rHandPos = ovr.getTrackerPosition( ovr.getRightHand() )
-	local HMDPos = ovr.getTrackerPosition( ovr.getHMD() )
-
-	-- Check if the player has their hands over their head. 
-	if ( (lHandPos.Y > HMDPos.Y) and (rHandPos.Y > HMDPos.Y) ) then 
-
-		local dist = lHandPos.Y - HMDPos.Y
-
-		print("left hand is above head!!! " .. dist )
-		-- Writes the "Expression-Scared parameter to your avatar as true."
-		avatar.setBool("Expression-Scared",true)
+	if (debounce~=mils) then  -- A little debouncing logic
+		debounce = mils  
+		print(mils/1.5)
+		avatar.setFloat("StaticBase",math.abs(mils/1.1)) -- Set the avatar variable. 
+		--vrc.input.jump()
 	end 
-
 end)
 

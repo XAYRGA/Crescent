@@ -31,7 +31,7 @@ namespace Crescent
             OSCInstance.Connect("127.0.0.1",9001,9000);
             OSCInstance.OnMessage += oscMessageIngest;
 
-            Console.WriteLine("Wait for VR...");
+            Console.WriteLine("Wait for VR....");
             var vrStarted = false;
             while (!vrStarted)
             {
