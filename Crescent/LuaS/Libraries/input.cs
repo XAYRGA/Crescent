@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NLua;
 using Crescent.LuaS;
 using System.Diagnostics;
+using Crescent.Platform;
 
 namespace Crescent.LuaS.Libraries
 {

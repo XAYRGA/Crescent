@@ -7,6 +7,7 @@ using System.Diagnostics;
 using OVRSharp;
 using Valve.VR;
 using System.Runtime.InteropServices;
+using Crescent.Modules;
 
 
 // TODO: Rework core in the future. 
@@ -38,9 +39,9 @@ namespace Crescent
             FrameTimer.Start();
             Lua.Start();   
             OSC.OnMessage += oscMessageIngest;
-          
             long tick_count = 0;
             IngestDataFunc = LuaRealm.Instance.LuaState.GetFunction("SYSTEM_IngestOSCData");
+
             while (Running)
             {
                 tick_count++;

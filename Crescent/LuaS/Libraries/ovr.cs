@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NLua;
 using Crescent.LuaS;
 using Newtonsoft.Json;
-
+using Crescent.Modules;
 
 namespace Crescent.LuaS.Libraries
 {

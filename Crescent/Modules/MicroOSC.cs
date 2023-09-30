@@ -9,7 +9,7 @@ using xayrga;
 using xayrga.byteglider;
 
 
-namespace Crescent
+namespace Crescent.Modules
 {
     public class MicroOSC
     {
@@ -38,7 +38,7 @@ namespace Crescent
 
         UdpClient udp;
         IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 9001);
-        IPEndPoint outgoingEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"),9000);
+        IPEndPoint outgoingEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9000);
         public event EventHandler<MicroOSCMessage> OnMessage;
         public bool Running = true;
 
@@ -58,20 +58,20 @@ namespace Crescent
             outgoingEndPoint = new IPEndPoint(IPAddress.Parse(host), transmit);
             udp = new UdpClient(endPoint);
             udp.DontFragment = true;
-        } 
+        }
 
         public void Stop()
         {
-            if (endPoint!=null)
+            if (endPoint != null)
                 endPoint = null;
             udp?.Dispose();
         }
 
 
-       private void processPacket()
+        private void processPacket()
         {
             var result = udp.Receive(ref endPoint);
-            using (MemoryStream stm = new MemoryStream(result))           
+            using (MemoryStream stm = new MemoryStream(result))
             using (bgReader read = new bgReader(stm))
             {
                 var firstChar = read.PeekChar();
@@ -83,8 +83,8 @@ namespace Crescent
                     case OSC_BUNDLE_MARKER:
                         throw new NotImplementedException("Bundle data not implemented yet");
                         break;
-                }               
-            }            
+                }
+            }
         }
 
         private void procMessage(bgReader ctx)
@@ -108,7 +108,7 @@ namespace Crescent
                 Data = new object[typeInfo.Length]
             };
 
-            for (int i=0; i < typeInfo.Length; i++)
+            for (int i = 0; i < typeInfo.Length; i++)
             {
                 var chrType = typeInfo[i];
                 switch (chrType)
@@ -148,7 +148,7 @@ namespace Crescent
                         Message.Data[i] = ctx.ReadUInt64BE();
                         Message.Types[i] = typeof(long);
                         break;
-                    case OSC_TYPE_CHAR: 
+                    case OSC_TYPE_CHAR:
                         Message.Data[i] = ctx.ReadChar();
                         Message.Types[i] = typeof(char);
                         break;
@@ -168,7 +168,8 @@ namespace Crescent
                 try
                 {
                     processPacket();
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Console.WriteLine($"OSC processing terminated! {e.ToString()}");
                     Running = false;
@@ -178,7 +179,7 @@ namespace Crescent
         private string readOSCString(bgReader ctx)
         {
             var strRet = ctx.ReadTerminatedString();
-            ctx.Align(4,BGAlignDirection.FORWARD); 
+            ctx.Align(4, BGAlignDirection.FORWARD);
             return strRet;
         }
 

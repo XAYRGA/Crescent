@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using NLua;
 
-namespace Crescent
+namespace Crescent.Modules
 {
     public class WebhookCallback
     {
@@ -25,7 +25,7 @@ namespace Crescent
 
 
 
- 
+
     public static class WebhookServer
     {
 
@@ -63,13 +63,14 @@ namespace Crescent
 
         public static void Update()
         {
-            while (queue.Count >  0)
+            while (queue.Count > 0)
             {
                 var CurrentItem = queue.Dequeue();
                 try
-                {                   
+                {
                     CurrentItem.info.CallBack.Call(CurrentItem.Response, CurrentItem.QueryString);
-                } catch (Exception E)
+                }
+                catch (Exception E)
                 {
                     Console.WriteLine(E);
                 }
@@ -111,7 +112,7 @@ namespace Crescent
             var endpoint = urlData[3];
 
             // Didn't authenticate
-            if (authToken == null || authToken.Length < 1 || authToken!=AuthKey)
+            if (authToken == null || authToken.Length < 1 || authToken != AuthKey)
             {
                 response.StatusCode = 401; return;
             }

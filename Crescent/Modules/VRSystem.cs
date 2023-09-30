@@ -9,7 +9,7 @@ using Valve.VR;
 using System.Runtime.InteropServices;
 using System.Numerics;
 
-namespace Crescent
+namespace Crescent.Modules
 {
     static internal class VRSystem
     {
@@ -17,7 +17,7 @@ namespace Crescent
 
         public static bool Running = false;
         public static Application VRApp;
-        public static Valve.VR.CVRSystem VRSys;
+        public static CVRSystem VRSys;
         private static TrackedDevicePose_t[] PosesLastFrame = new TrackedDevicePose_t[OpenVR.k_unMaxTrackedDeviceCount];
         private static ETrackedPropertyError lastError;
 
@@ -26,7 +26,7 @@ namespace Crescent
             try
             {
                 VRApp = new Application(Application.ApplicationType.Background);
-                VRSys = VRApp.OVRSystem;                    
+                VRSys = VRApp.OVRSystem;
             }
             catch (Exception e)
             {
@@ -39,13 +39,13 @@ namespace Crescent
         {
             Running = false;
             VRSys = null;
-            VRApp?.Shutdown();          
+            VRApp?.Shutdown();
         }
 
         public static void Update()
         {
             if (VRSys == null)
-                return; 
+                return;
 
             VRSys.GetDeviceToAbsoluteTrackingPose(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated, 0, PosesLastFrame);
         }
@@ -97,7 +97,7 @@ namespace Crescent
             var W = new VRControllerState_t();
             if (VRSys == null)
                 return W;
-            VRSys.GetControllerState(controller, ref W, (uint)Marshal.SizeOf(W));          
+            VRSys.GetControllerState(controller, ref W, (uint)Marshal.SizeOf(W));
             return W;
         }
 
@@ -107,14 +107,14 @@ namespace Crescent
         {
             VRControllerState_t controllerState = GetControllerState(controller);
             var buttons = controllerState.ulButtonPressed;
-            return ((buttons >> button) & 0x01) > 0;
+            return (buttons >> button & 0x01) > 0;
         }
 
         public static bool GetControllerButtonTouched(uint controller, byte button)
         {
             VRControllerState_t controllerState = GetControllerState(controller);
             var buttons = controllerState.ulButtonTouched;
-            return ((buttons >> button) & 0x01) > 0;
+            return (buttons >> button & 0x01) > 0;
         }
 
         public static Vector3 GetTrackerVelocity(int tracker)
